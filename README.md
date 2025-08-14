@@ -3,7 +3,7 @@
 Trang web đơn giản giúp trò chuyện với AI thông qua OpenAI API.
 
 ## Sử dụng
-1. Mở `public/index.html` trong trình duyệt.
+1. Mở `index.html` trong trình duyệt.
 2. Nhập API key OpenAI vào ô "API Key".
 3. Gõ tin nhắn và nhấn "Gửi" để nhận phản hồi.
 

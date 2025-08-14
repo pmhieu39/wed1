@@ -69,32 +69,14 @@
       messageInput.value = '';
 
       try {
-        let url, headers, body;
-        if (provider === 'openai') {
-          url = 'https://api.openai.com/v1/chat/completions';
-          headers = { 'Content-Type': 'application/json', 'Authorization': `Bearer ${apiKey}` };
-          body = JSON.stringify({ model: 'gpt-3.5-turbo', messages: [{ role: 'user', content: message }] });
-        } else if (provider === 'anthropic') {
-          url = 'https://api.anthropic.com/v1/messages';
-          headers = { 'Content-Type': 'application/json', 'x-api-key': apiKey, 'anthropic-version': '2023-06-01' };
-          body = JSON.stringify({ model: 'claude-3-sonnet-20240229', max_tokens: 300, messages: [{ role: 'user', content: message }] });
-        } else if (provider === 'gemini') {
-          url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent?key=${apiKey}`;
-          headers = { 'Content-Type': 'application/json' };
-          body = JSON.stringify({ contents: [{ parts: [{ text: message }] }] });
-        }
-
-        const response = await fetch(url, { method: 'POST', headers, body });
+        const response = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ provider, apiKey, message })
+        });
         const data = await response.json();
-        let reply = 'Không có phản hồi';
-        if (provider === 'openai') {
-          reply = data?.choices?.[0]?.message?.content || reply;
-        } else if (provider === 'anthropic') {
-          reply = data?.content?.[0]?.text || reply;
-        } else if (provider === 'gemini') {
-          reply = data?.candidates?.[0]?.content?.parts?.[0]?.text || reply;
-        }
-        appendMessage('<b>AI:</b> ' + reply, 'ai');
+        if (data.error) throw new Error(data.error);
+        appendMessage('<b>AI:</b> ' + data.reply, 'ai');
       } catch (err) {
         appendMessage('<b>Lỗi:</b> ' + err.message, 'ai');
       }

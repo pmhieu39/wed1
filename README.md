@@ -3,8 +3,9 @@
 Trang web trò chuyện với nhiều mô hình AI khác nhau.
 
 ## Cài đặt
-1. Chạy `npm install` (không cần nếu đã có Node 18+).
-2. Chạy `npm start` để mở máy chủ ở `http://localhost:3000`.
+1. Cần có Node.js 14 trở lên.
+2. Chạy `npm install` để cài các phụ thuộc.
+3. Chạy `npm start` để mở máy chủ ở `http://localhost:3000`.
 
 ## Sử dụng
 1. Mở địa chỉ trên trong trình duyệt.

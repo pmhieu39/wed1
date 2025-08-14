@@ -7,6 +7,9 @@
     "start": "node server.js",
     "test": "node -e \"console.log('no tests');\""
   },
+  "dependencies": {
+    "node-fetch": "^3.3.2"
+  },
   "keywords": [],
   "author": "",
   "license": "ISC",

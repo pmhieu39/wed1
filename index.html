@@ -4,15 +4,61 @@
   <meta charset="UTF-8" />
   <title>AI Chat</title>
   <style>
-    body { font-family: sans-serif; max-width: 600px; margin: auto; display: flex; flex-direction: column; gap: 10px; }
-    .settings { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
-    #chat { border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: auto; background: #fafafa; display: flex; flex-direction: column; }
-    .message { padding: 8px; border-radius: 4px; margin: 4px 0; max-width: 80%; }
-    .user { background: #e0f7fa; align-self: flex-end; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      max-width: 600px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: linear-gradient(135deg, #89f7fe, #66a6ff);
+      min-height: 100vh;
+      padding: 20px;
+      box-sizing: border-box;
+      color: #222;
+    }
+    h1 { text-align: center; color: #fff; }
+    .settings { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; background: rgba(255,255,255,0.8); padding: 8px; border-radius: 6px; }
+    #chat {
+      border: 1px solid #ccc;
+      padding: 10px;
+      height: 300px;
+      overflow-y: auto;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      flex-direction: column;
+      border-radius: 6px;
+    }
+    .message {
+      padding: 8px;
+      border-radius: 4px;
+      margin: 4px 0;
+      max-width: 80%;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+      animation: fadeIn 0.3s ease;
+    }
+    .user { background: #e3f2fd; align-self: flex-end; }
     .ai { background: #e8f5e9; align-self: flex-start; }
+    .error { background: #ffebee; color: #c62828; align-self: flex-start; }
+    .avatar { font-size: 1.4em; }
     .input-row { display: flex; gap: 6px; }
     .input-row input { flex: 1; }
+    button {
+      background: #1976d2;
+      color: #fff;
+      border: none;
+      padding: 8px 14px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+    button:hover { background: #1565c0; transform: translateY(-2px); }
+    button:active { transform: scale(0.98); }
     #status { color: green; }
+    #apiError { color: #c62828; min-height: 1em; }
+    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
@@ -29,17 +75,18 @@
     <button id="saveKey">Lưu API</button>
     <span id="status"></span>
   </div>
+  <div id="apiError"></div>
   <div id="chat"></div>
   <div class="input-row">
     <input id="message" placeholder="Nhập tin nhắn" />
     <button id="send">Gửi</button>
   </div>
   <script>
-    function appendMessage(text, cls) {
+    function appendMessage(text, cls, avatar) {
       const chat = document.getElementById('chat');
       const div = document.createElement('div');
       div.className = 'message ' + cls;
-      div.innerHTML = text;
+      div.innerHTML = `<span class="avatar">${avatar}</span><span>${text}</span>`;
       chat.appendChild(div);
       chat.scrollTop = chat.scrollHeight;
     }
@@ -65,7 +112,7 @@
       const messageInput = document.getElementById('message');
       const message = messageInput.value.trim();
       if (!apiKey || !message) return;
-      appendMessage('<b>Bạn:</b> ' + message, 'user');
+      appendMessage('<b>Bạn:</b> ' + message, 'user', '🧑');
       messageInput.value = '';
 
       try {
@@ -76,9 +123,11 @@
         });
         const data = await response.json();
         if (data.error) throw new Error(data.error);
-        appendMessage('<b>AI:</b> ' + data.reply, 'ai');
+        appendMessage('<b>AI:</b> ' + data.reply, 'ai', '🤖');
+        document.getElementById('apiError').textContent = '';
       } catch (err) {
-        appendMessage('<b>Lỗi:</b> ' + err.message, 'ai');
+        appendMessage('<b>Lỗi:</b> ' + err.message, 'error', '⚠️');
+        document.getElementById('apiError').textContent = 'API lỗi: ' + err.message;
       }
     }
 

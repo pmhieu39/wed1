@@ -1,6 +1,6 @@
 # Wed Chat AI
 
-Trang web trò chuyện với nhiều mô hình AI khác nhau.
+Trang web trò chuyện với nhiều mô hình AI khác nhau, giao diện nhiều màu sắc kèm avatar và hiệu ứng nút bấm.
 
 ## Cài đặt
 1. Cần có Node.js 14 trở lên.
@@ -12,6 +12,7 @@ Trang web trò chuyện với nhiều mô hình AI khác nhau.
 2. Chọn nhà cung cấp AI và nhập API key.
 3. Nhấn **Lưu API** để ghi nhớ khóa trong trình duyệt.
 4. Gõ tin nhắn và nhấn "Gửi" hoặc Enter để nhận phản hồi.
+5. Nếu API gặp lỗi, thông báo sẽ hiện phía dưới phần cài đặt.
 
 ## Lưu ý
 - API key được lưu trong `localStorage` và gửi đến máy chủ cục bộ trước khi tới nhà cung cấp. Không dùng khóa bí mật trên máy công cộng.
